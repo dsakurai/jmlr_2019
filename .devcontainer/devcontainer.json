@@ -1,0 +1,49 @@
+{
+    "name": "Dev Container",
+    "build": {
+      "dockerfile": "Dockerfile"
+    },
+    "remoteUser": "vscode",
+    "containerEnv": {
+        "HOME": "/home/vscode"
+    },
+
+    "runArgs": [
+        "--userns=keep-id",
+        "--cap-add=SYS_ADMIN", // For WSL2S, where nix needs sethostname but can't due to tighter security (and WSL2's characteristics)
+        "--security-opt", "seccomp=unconfined", // For WSL2 which has tighter security
+        // "--security-opt=label=disable", // NVIDIA GPU 
+        "--volume=${localWorkspaceFolder}/nix-store:/nix/store:z",
+        
+        "--device", "nvidia.com/gpu=all" // NVIDIA GPU
+ 
+
+        // X11
+        // NOT WORKING. Check out Toolbox: https://github.com/containers/toolbox/issues/610
+        // "--uidmap", "1000:0:1",
+        // "--uidmap", "0:1:1000",
+        // "-e", "DISPLAY",
+        // "--net=host",
+        // "--volume=${localEnv:XAUTHORITY}:/home/vscode/.Xauthority:Z"
+    ],
+
+    // Install nix
+    "postCreateCommand": "/workspaces/${localWorkspaceFolderBasename}/.devcontainer/postCreate.sh",
+
+    "postStartCommand": "/workspaces/${localWorkspaceFolderBasename}/project/jupyter-lab-nix.sh",
+
+    "features": {
+            // SSH-agent forwarding
+            "git": "os-provided",
+            "sshd": "latest"
+        },
+
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-toolsai.jupyter",
+                "ms-python.python"
+            ]
+        }
+    }
+}
