@@ -15,6 +15,7 @@ With VSCode DevContainers
 
 DevContainers should auto-start the Jupyter notebook kernel. Specify http://localhost:8888 in VSCode, or access http://localhost:8888/lab with the web browser.
 Run `project/shrec_real_all_freq.ipynb`. The dataset is included for this notebook.
+
 ---
 
 The `core` folder contains some utility code while the actual training/testing code is in the top-level jupyter notebooks, which are named after the corresponding datasets. 
